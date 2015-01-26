@@ -6,15 +6,15 @@ IPAddress ip(192,168,0,225);
 IPAddress server(192,168,0,5);
 EthernetClient client;
 
-// Variáveis pinagem
+// Variáveis pinagem - OUTPUT
+int pinsOUT[] = { 2, 3, 4, 5 };
 int pin2 = 2;
 int pin3 = 3;
 int pin4 = 4;
 int pin5 = 5;
 
-// Variáveis medições
-int _pin2 = 0;
-int _pin3 = 0;
+// Variáveis de últimas medições
+int pins[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
 // Variáveis leitura
 String _text = "";
@@ -30,7 +30,11 @@ void setup() {
     Serial.println("Conectado.");
   } else {
     Serial.println("Erro: Conexão falhou.");
-  }
+  };
+  
+  for (int i = 0; i <= sizeof(pinsOUT); i++){
+    Serial.println(i);
+  };
    
   // Buzzer
   pinMode(pin2, OUTPUT);
@@ -44,25 +48,24 @@ void loop() {
     char c = client.read();
     getString(c);      
   }
-  buttons();
+  buttonsConfigs();
 };
 
 // Configuração dos interruptores
-void buttons(){
+void buttonsConfigs(){
    
   // Buzzer
   __pin3 = digitalRead(pin3);
   if (__pin3 == 0){
-    if(__pin3 == _pin3){
+    if(__pin3 == pins[pin3]){
       toogle(String(pin2), __pin3);
-      _pin3 = 1;
+      pins[pin3] = 1;
     }
   }else{
-    _pin3 = 0;
+    pins[pin3] = 0;
   }
   
 };
-
 
 // Toogle valor sensor
 void toogle(String pin, int value){
