@@ -1,0 +1,23 @@
+<h3 style="margin-bottom: 20px">
+	<i class="glyphicon glyphicon-map-marker"></i>
+	&nbsp;&nbsp;Consulta de sensor
+</h3>
+<body>
+	<table class="table table-condensed table-bordered">
+		<thead>
+			<tr>
+				<th>Sensor</th>
+				<th style="width: 100px" class="text-center">Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="sensor in data | orderBy:'nome'">
+				<td>{{sensor.description}}</td>
+				<td style="width: 100px" class="text-center">
+					<button ng-click="update(sensor)" class="btn btn-primary btn-xs"><i class="glyphicon glyphicon-edit"></i></button>
+					<button ng-click="delete(sensor, $index)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>

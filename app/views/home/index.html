@@ -1,0 +1,16 @@
+<div class="row ng-cloak text-center" style="margin-top: 10px">
+  <div class="col-lg-4 col-sm-6" ng-repeat='sensor in data.data'>
+  	<div class="panel panel-default">
+  		<div class="panel-body">
+  			<h2>{{sensor.description}}</h2>
+  			<br>
+    		<p ng-show="sensor.status == 0">
+    			<button type="button" class="btn btn-lg btn-success btn-block" ng-click="sensorOn(sensor)">{{sensor.labelOn}}</button>
+    		</p>
+        <p ng-show="sensor.status == 1">
+          <button type="button" class="btn btn-lg btn-danger btn-block" ng-click="sensorOff(sensor)">{{sensor.labelOff}}</button>
+        </p>
+  		</div>
+  	</div>
+  </div>
+</div>

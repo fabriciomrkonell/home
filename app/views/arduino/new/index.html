@@ -1,0 +1,47 @@
+<h3 style="margin-bottom: 20px">
+	<i class="glyphicon glyphicon-map-marker"></i>
+	&nbsp;&nbsp;Cadastro de sensor
+</h3>
+<form name="userForm" role="form" class="ng-cloak">
+	<div class="row ng-cloak">
+		<div class="col-sm-5">
+	 		<div class="form-group">
+	    	<label>Descrição</label>
+	    	<input type="text" class="form-control" ng-model="data.description" placeholder="Ex: Lâmpada">
+	  	</div>
+		</div>
+	</div>
+	<div class="row ng-cloak">
+		<div class="col-sm-5">
+	 		<div class="form-group">
+	    	<label>Pino</label>
+	    	<input type="number" class="form-control" ng-model="data.pin" placeholder="Ex: Ligar">
+	  	</div>
+		</div>
+	</div>
+	<div class="row ng-cloak">
+		<div class="col-sm-5">
+	 		<div class="form-group">
+	    	<label>Label ligado</label>
+	    	<input type="text" class="form-control" ng-model="data.labelOn" placeholder="Ex: Ligar">
+	  	</div>
+		</div>
+	</div>
+	<div class="row ng-cloak">
+		<div class="col-sm-5">
+	 		<div class="form-group">
+	    	<label>Label desligado</label>
+	    	<input type="text" class="form-control" ng-model="data.labelOff" placeholder="Ex: Desligar">
+	  	</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-5">
+	 		<div class="form-group">
+	    	<button type="button" class="btn btn-success" ng-click="save()">
+	    		<i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;Salvar
+	    	</button>
+	  	</div>
+		</div>
+	</div>
+</form>
