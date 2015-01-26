@@ -12,12 +12,24 @@
     <link href="css/index.css" rel="stylesheet">
   </head>
   <body>
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/home">Home</a>
+        </div>
+      </div>
+    </nav>
     <div ng-app="home" ng-controller="homeCtrl" class="container ng-cloak">
       <form class="form-signin text-center">
-        <img style="width: 150px" src="img/icon.png">
+        <img class="img-center" src="img/icon.png">
         <input type="email" class="form-control" placeholder="Email" ng-model="email">
         <input type="password" class="form-control" placeholder="Senha" ng-model="password">
-        <button type="button" class="btn btn-lg btn-success btn-block" ng-click="login()">Entrar</button>
+        <button type="button" class="btn btn-lg btn-primary btn-block" ng-click="login()">Entrar</button>
       </form>
     </div>
     <script src="lib/angular/angular.min.js"></script>

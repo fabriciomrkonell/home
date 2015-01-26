@@ -1,5 +1,5 @@
 body {
-  padding-top: 40px;
+  padding-top: 100px;
   padding-bottom: 40px;
 }
 
@@ -41,4 +41,9 @@ body {
   margin-bottom: 10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
+}
+
+.img-center {
+  width: 150px;
+  margin-bottom: 30px;
 }

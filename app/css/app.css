@@ -32,3 +32,11 @@ body {
 .real-time_type {
   font-size: 18px;
 }
+
+/*
+<ul class="nav navbar-nav navbar-right hidden-xs">
+<li class="dropdown">
+<li><a href="javascript:void(0)" class="real-time">10<span class="real-time_type">ºC</span> &nbsp;&nbsp; 89<span class="real-time_type">%</span></a></li>
+</li>
+</ul>
+*/
