@@ -23,7 +23,6 @@ function execute(listArduinos, listClients,  _entities, _length, now){
         id: _entities[now].ArduinoId
       }
     }).success(function(entity) {
-      console.log(_entities[now].status)
       entity.status = _entities[now].status;
       entity.updateAttributes(entity).success(function(){
         for (c in listClients) {

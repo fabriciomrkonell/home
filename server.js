@@ -235,11 +235,10 @@ function _getTime(data){
 };
 
 setInterval(function(){
-  task.execute(listArduinos, listClients, "1700");
-  /*time = _getTime(new Date());
+  time = _getTime(new Date());
   if(time.slice(2,4) == "00"){
     task.execute(listArduinos, listClients, time);
   }else if(time.slice(2,4) == "34"){
     task.execute(listArduinos, listClients, time);
-  }*/
+  }
 }, 5000)
