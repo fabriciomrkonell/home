@@ -10,6 +10,5 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING
     }
   })
-
-  return User
+  return User;
 }

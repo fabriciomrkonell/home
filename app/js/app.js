@@ -43,6 +43,18 @@ define(['angularAMD', 'angular-route'], function (angularAMD) {
       templateUrl: '/views/arduino/' + Math.random(),
       controller: 'arduino',
       controllerUrl: 'js/arduino/controller'
+    })).when("/nova-tarefa", angularAMD.route({
+      templateUrl: '/views/task/new/' + Math.random(),
+      controller: 'newTask',
+      controllerUrl: 'js/task/new/controller'
+    })).when("/nova-tarefa/:id", angularAMD.route({
+      templateUrl: '/views/task/new/' + Math.random(),
+      controller: 'newTask',
+      controllerUrl: 'js/task/new/controller'
+    })).when("/tarefa", angularAMD.route({
+      templateUrl: '/views/task/' + Math.random(),
+      controller: 'task',
+      controllerUrl: 'js/task/controller'
     })).otherwise({redirectTo: "/home"});
 
     var httpStatusInterceptor = function($window){

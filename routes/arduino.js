@@ -18,14 +18,19 @@ exports.persist = function(req, res, next) {
       entity.description = req.body.description;
       entity.labelOn = req.body.labelOn;
       entity.labelOff = req.body.labelOff;
-      entity.pin = req.body.pin;
       entity.updateAttributes(entity).success(function(_entity) {
         res.json(_entity)
       })
     }else{
       req.body.status = 0;
-      db.Arduino.create(req.body).success(function(_entity) {
-        res.json({ error: 0, message: "Salvo com sucesso!" })
+      db.Arduino.find({ where: { pin: req.body.pin } }).success(function(entityPin) {
+        if(entityPin){
+          res.json({ error: 2, message: "Já existe um sensor cadastrado nesse pino!" })
+        }else{
+          db.Arduino.create(req.body).success(function(_entity) {
+            res.json({ error: 0, message: "Salvo com sucesso!" })
+          });
+        }
       });
     }
   });

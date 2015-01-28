@@ -1,27 +1,23 @@
 module.exports = function(sequelize, DataTypes) {
-  var Arduino = sequelize.define('Arduino', {
-    description: {
+  var Task = sequelize.define('Task', {
+    date: {
       type: DataTypes.STRING
     },
-    pin: {
-      type: DataTypes.INTEGER
+    time: {
+      type: DataTypes.STRING
     },
     status: {
       type: DataTypes.STRING
     },
-    labelOn: {
-      type: DataTypes.STRING
-    },
-    labelOff: {
+    repeat: {
       type: DataTypes.STRING
     }
   }, {
     classMethods: {
       associate: function(models) {
-        Arduino.hasMany(models.Task)
+        Task.belongsTo(models.Arduino)
       }
     }
   })
-
-  return Arduino
+  return Task;
 }

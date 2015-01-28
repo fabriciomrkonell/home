@@ -1,0 +1,80 @@
+<h3 style="margin-bottom: 20px">
+	<i class="glyphicon glyphicon-dashboard"></i>
+	&nbsp;&nbsp;Hoje
+</h3>
+<table class="table table-condensed table-bordered">
+	<thead>
+		<tr>
+			<th>Sensor</th>
+			<th style="width: 100px" class="text-center">Hora</th>
+			<th style="width: 150px" class="text-center">Status</th>
+			<th style="width: 100px" class="text-center">Diária</th>
+			<th style="width: 100px" class="text-center">Ações</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="task in data.today">
+			<td>{{task.Arduino.description}}</td>
+			<td style="width: 100px" class="text-center">{{getTime(task.time)}}</td>
+			<td style="width: 150px" class="text-center">{{getStatus(task)}}</td>
+			<td style="width: 100px" class="text-center">{{getToday(task)}}</td>
+			<td style="width: 100px" class="text-center">
+				<button ng-click="toogleRepeat(task)" ng-show="task.repeat == 1" class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-stop"></i></button>
+				<button ng-click="toogleRepeat(task)" ng-show="task.repeat == 0" class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-play"></i></button>
+				<button ng-click="delete(task, $index, 1)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<h3 style="margin-bottom: 20px">
+	<i class="glyphicon glyphicon-dashboard"></i>
+	&nbsp;&nbsp;Próximas
+</h3>
+<table class="table table-condensed table-bordered">
+	<thead>
+		<tr>
+			<th>Sensor</th>
+			<th style="width: 150px" class="text-center">Data</th>
+			<th style="width: 150px" class="text-center">Status</th>
+			<th style="width: 100px" class="text-center">Ações</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="task in data.nexts">
+			<td>{{task.Arduino.description}}</td>
+			<td style="width: 150px" class="text-center">{{getTime(task.time)}} - {{getDate(task.date)}}</td>
+			<td style="width: 150px" class="text-center">{{getStatus(task)}}</td>
+			<td style="width: 100px" class="text-center">
+				<button ng-click="toogleRepeat(task)" class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-play"></i></button>
+				<button ng-click="delete(task, $index, 2)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<h3 style="margin-bottom: 20px">
+	<i class="glyphicon glyphicon-dashboard"></i>
+	&nbsp;&nbsp;Executadas
+</h3>
+<table class="table table-condensed table-bordered">
+	<thead>
+		<tr>
+			<th>Sensor</th>
+			<th style="width: 150px" class="text-center">Data</th>
+			<th style="width: 150px" class="text-center">Status</th>
+			<th style="width: 100px" class="text-center">Ações</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="task in data.finished">
+			<td>{{task.Arduino.description}}</td>
+			<td style="width: 150px" class="text-center">{{getTime(task.time)}} - {{getDate(task.date)}}</td>
+			<td style="width: 150px" class="text-center">{{getStatus(task)}}</td>
+			<td style="width: 100px" class="text-center">
+				<button ng-click="toogleRepeat(task)" class="btn btn-warning btn-xs"><i class="glyphicon glyphicon-play"></i></button>
+				<button ng-click="delete(task, $index, 3)" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></button>
+			</td>
+		</tr>
+	</tbody>
+</table>

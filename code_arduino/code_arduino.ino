@@ -30,11 +30,7 @@ void setup() {
     Serial.println("Conectado.");
   } else {
     Serial.println("Erro: Conexão falhou.");
-  };
-  
-  for (int i = 0; i <= sizeof(pinsOUT); i++){
-    Serial.println(i);
-  };
+  }; 
    
   // Buzzer
   pinMode(pin2, OUTPUT);

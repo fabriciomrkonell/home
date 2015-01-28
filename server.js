@@ -18,8 +18,11 @@ var express = require('express'),
     LocalStrategy = require('passport-local').Strategy,
     user = require('./routes/user'),
     arduino = require('./routes/arduino'),
+    task = require('./routes/task'),
     site = require('./routes/site'),
-    listArduinos = [];
+    listArduinos = [],
+    listClients = [],
+    time = '';
 
 app.set('port', process.env.PORT || 3000)
 app.use(cors());
@@ -128,14 +131,26 @@ app.get('/views/arduino/new/:page', naoAutenticado, function(req, res, next){
   res.sendfile('app/views/arduino/new/index.html', { user: req.user });
 });
 
+app.get('/views/task/:page', naoAutenticado, function(req, res, next){
+  res.sendfile('app/views/task/index.html', { user: req.user });
+});
+
+app.get('/views/task/new/:page', naoAutenticado, function(req, res, next){
+  res.sendfile('app/views/task/new/index.html', { user: req.user });
+});
+
 app.get('/init', user.create)
 app.get('/arduino', naoAutenticado, arduino.findAll)
 app.get('/arduino/:id', naoAutenticado, arduino.find)
 app.get('/real-time', naoAutenticado, site.realTime)
+app.get('/task', task.findAll)
 
 app.post('/arduino', naoAutenticado, arduino.persist)
+app.post('/task', naoAutenticado, task.persist)
+app.post('/task/toogle/:id', naoAutenticado, task.toogleRepeat)
 
 app.del('/arduino/:id', naoAutenticado, arduino.delete)
+app.del('/task/:id', naoAutenticado, task.delete)
 
 if ('development' === app.get('env')) {
   app.use(errorHandler())
@@ -161,9 +176,17 @@ function getMessage(message){
 };
 
 io.on('connection', function(client){
+  listClients.push(client);
   client.on('message', function(obj){
     console.log(obj);
     toogle(obj.message, client, obj.status);
+  });
+  client.on('disconnect', function(){
+    for(var i = 0; i < listClients.length; i++){
+      if(listClients[i].id == client.id){
+        listClients.splice(i, 1);
+      }
+    }
   });
 });
 
@@ -195,3 +218,28 @@ db.sequelize.sync({ force: false }).complete(function(err) {
     });
   }
 })
+
+function _getTime(data){
+  var _final = '';
+  if(parseInt(data.getHours()) < 10){
+    _final = _final + "0" + parseInt(data.getHours());
+  }else{
+    _final = _final + parseInt(data.getHours());
+  }
+  if(parseInt(data.getMinutes()) < 10){
+    _final = _final + "0" + parseInt(data.getMinutes());
+  }else{
+    _final = _final + parseInt(data.getMinutes());
+  }
+  return _final;
+};
+
+setInterval(function(){
+  task.execute(listArduinos, listClients, "1700");
+  /*time = _getTime(new Date());
+  if(time.slice(2,4) == "00"){
+    task.execute(listArduinos, listClients, time);
+  }else if(time.slice(2,4) == "34"){
+    task.execute(listArduinos, listClients, time);
+  }*/
+}, 5000)
