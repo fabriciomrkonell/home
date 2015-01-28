@@ -105,7 +105,7 @@ exports.toogleRepeat = function(req, res, next) {
 }
 
 exports.persist = function(req, res, next) {
-  req.body.repeat = false;
+  req.body.repeat = 0;
   req.body.date = req.body.date.split("-")[0] + req.body.date.split("-")[1] + req.body.date.split("-")[2];
   db.Task.create(req.body).success(function(_entity) {
     res.json({ error: 0, message: "Salvo com sucesso!" })
