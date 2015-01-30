@@ -43,6 +43,15 @@ exports.toogleStatus = function(pin, status) {
   });
 }
 
+exports.reset = function() {
+  db.Arduino.findAll().success(function(entities) {
+    for(var i = 0; i < entities.length; i++){
+      entities[i].status = 0;
+      entities[i].updateAttributes(entities[i]);
+    }
+  });
+}
+
 exports.delete = function(req, res, next) {
   db.Arduino.find({ where: { id: req.param('id') } }).success(function(entity) {
     if (entity) {

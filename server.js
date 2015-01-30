@@ -193,6 +193,7 @@ tcpServer.on('connection',function(socket){
 
   console.log('Arduino conectado');
   listArduinos.push(socket);
+  arduino.reset();
 
   socket.text = "";
 
