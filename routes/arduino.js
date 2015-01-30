@@ -46,8 +46,17 @@ exports.toogleStatus = function(pin, status) {
 exports.delete = function(req, res, next) {
   db.Arduino.find({ where: { id: req.param('id') } }).success(function(entity) {
     if (entity) {
-      entity.destroy().success(function() {
-        res.send(204)
+      db.Task.findAll({
+        where: {
+          ArduinoId: req.param('id')
+        }
+      }).success(function(entities) {
+        for(var i = 0; i < entities.length; i++){
+          entities[i].destroy();
+        }
+        entity.destroy().success(function() {
+          res.send(204)
+        });
       })
     } else {
       res.send(404)

@@ -156,31 +156,29 @@ if ('development' === app.get('env')) {
   app.use(errorHandler())
 }
 
-function toogle(message, client, status){
+/*function toogle(message, client, status){
 
-  arduino.toogleStatus(message.pin, status);
+  //arduino.toogleStatus(message.pin, status);
 
-  message.status = status;
+  //message.status = status;
 
-  for (a in listArduinos) {
-    listArduinos[a].write(getMessage(message));
-  };
 
-  client.broadcast.emit('message', message);
-  client.emit('message', message);
 
-};
+  //client.broadcast.emit('message', message);
+  //client.emit('message', message);
 
-function getMessage(message){
-  return '<' + message.pin + ',' + message.status + '>';
-};
+};*/
 
 io.on('connection', function(client){
+
   listClients.push(client);
+
   client.on('message', function(obj){
-    console.log(obj);
-    toogle(obj.message, client, obj.status);
+    for (a in listArduinos) {
+      listArduinos[a].write(obj.pin.toString());
+    };
   });
+
   client.on('disconnect', function(){
     for(var i = 0; i < listClients.length; i++){
       if(listClients[i].id == client.id){
@@ -188,22 +186,42 @@ io.on('connection', function(client){
       }
     }
   });
+
 });
 
 tcpServer.on('connection',function(socket){
+
   console.log('Arduino conectado');
   listArduinos.push(socket);
+
+  socket.text = "";
+
   socket.on('data',function(data){
-    console.log(data.toString());
-    /*for (g in io.clients) {
-      var client = io.clients[g];
-      db.Arduino.find({ where: { pin: data.toString()  } }).success(function(entity) {
-        if(entity){
-          toogle(entity, client);
-        }
-      });
-    }*/
-  })
+
+    socket.text = socket.text + data.toString();
+
+    if(socket.text.length > 3){
+      socket.text = "";
+    }
+
+    if(socket.text.length == 3){
+      if(socket.text.charAt(1) == "-"){
+        db.Arduino.find({ where: { pin: socket.text.charAt(0) } }).success(function(entity) {
+          if(entity){
+            entity.status = socket.text.charAt(2);
+            socket.text = "";
+            entity.updateAttributes(entity).success(function(_entity) {
+              for (c in listClients) {
+                listClients[c].emit('message', _entity);
+              };
+            })
+          }
+        });
+      }else{
+        socket.text = "";
+      }
+    }
+  });
 });
 
 db.sequelize.sync({ force: false }).complete(function(err) {
@@ -238,7 +256,7 @@ setInterval(function(){
   time = _getTime(new Date());
   if(time.slice(2,4) == "00"){
     task.execute(listArduinos, listClients, time);
-  }else if(time.slice(2,4) == "34"){
+  }else if(time.slice(2,4) == "30"){
     task.execute(listArduinos, listClients, time);
   }
-}, 5000)
+}, 60000);

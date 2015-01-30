@@ -5,7 +5,7 @@ define(['js/app'], function (app) {
       angular.extend($scope, {
         data: {
           description: '',
-          pin: 1,
+          pin: 2,
           labelOn: '',
           labelOff: ''
         }

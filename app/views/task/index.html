@@ -1,8 +1,8 @@
-<h3 style="margin-bottom: 20px">
+<h3 style="margin-bottom: 20px" ng-show="data.today.length > 0">
 	<i class="glyphicon glyphicon-dashboard"></i>
 	&nbsp;&nbsp;Hoje
 </h3>
-<table class="table table-condensed table-bordered">
+<table class="table table-condensed table-bordered" ng-show="data.today.length > 0">
 	<thead>
 		<tr>
 			<th>Sensor</th>
@@ -26,12 +26,12 @@
 		</tr>
 	</tbody>
 </table>
-<br>
-<h3 style="margin-bottom: 20px">
+<br ng-show="data.today.length > 0">
+<h3 style="margin-bottom: 20px" ng-show="data.nexts.length > 0">
 	<i class="glyphicon glyphicon-dashboard"></i>
 	&nbsp;&nbsp;Próximas
 </h3>
-<table class="table table-condensed table-bordered">
+<table class="table table-condensed table-bordered" ng-show="data.nexts.length > 0">
 	<thead>
 		<tr>
 			<th>Sensor</th>
@@ -52,12 +52,12 @@
 		</tr>
 	</tbody>
 </table>
-<br>
-<h3 style="margin-bottom: 20px">
+<br ng-show="data.nexts.length > 0">
+<h3 style="margin-bottom: 20px" ng-show="data.finished.length > 0">
 	<i class="glyphicon glyphicon-dashboard"></i>
 	&nbsp;&nbsp;Executadas
 </h3>
-<table class="table table-condensed table-bordered">
+<table class="table table-condensed table-bordered" ng-show="data.finished.length > 0">
 	<thead>
 		<tr>
 			<th>Sensor</th>

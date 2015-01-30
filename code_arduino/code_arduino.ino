@@ -3,23 +3,24 @@
 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x6C, 0xFE };
 IPAddress ip(192,168,0,225);
-IPAddress server(192,168,0,5);
+IPAddress server(192,168,0,3);
 EthernetClient client;
 
-// Variáveis pinagem - OUTPUT
-int pinsOUT[] = { 2, 3, 4, 5 };
-int pin2 = 2;
-int pin3 = 3;
-int pin4 = 4;
-int pin5 = 5;
+// Variáveis
+int pins[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+int sensor[] = { 2, 3, 5, 6 };
+
+// Pinos
+int pinSensor[] = { 2, 3, 5, 6 };
+int pinOutros[] = { 7, 8, 9 };
 
 // Variáveis de últimas medições
-int pins[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int realPins[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+int realSensor[] = { 0, 0, 0, 0 };
 
-// Variáveis leitura
-String _text = "";
-int __pin2 = 0;
-int __pin3 = 0;
+int totalSensor = 4;
+int totalOutros = 3;
+
 
 void setup() {
   Ethernet.begin(mac, ip);
@@ -31,78 +32,49 @@ void setup() {
   } else {
     Serial.println("Erro: Conexão falhou.");
   }; 
-   
-  // Buzzer
-  pinMode(pin2, OUTPUT);
-  digitalWrite(pin2, 0);
-  pinMode(pin3, INPUT); 
+  
+  // Pins réle
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
+  
+  // Pins outros
+  pinMode(7, OUTPUT);
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
    
 };
 
 void loop() {
   if (client.available()) {
     char c = client.read();
-    getString(c);      
+    _readString(c);      
   }
-  buttonsConfigs();
+  _setServer();
 };
 
-// Configuração dos interruptores
-void buttonsConfigs(){
-   
-  // Buzzer
-  __pin3 = digitalRead(pin3);
-  if (__pin3 == 0){
-    if(__pin3 == pins[pin3]){
-      toogle(String(pin2), __pin3);
-      pins[pin3] = 1;
+void _readString(char pin) {
+  String _pin(pin);
+  realPins[_pin.toInt()] = !realPins[_pin.toInt()];  
+    
+  digitalWrite(_pin.toInt(), realPins[_pin.toInt()]);
+
+  for(int i = 0; i < totalOutros; i++){
+    if(pinOutros[i] == _pin.toInt()){
+      client.print(_pin + "-" + realPins[_pin.toInt()]);
     }
-  }else{
-    pins[pin3] = 0;
-  }
+  }  
+ 
+};
+
+void _setServer(){
   
-};
-
-// Toogle valor sensor
-void toogle(String pin, int value){
-  value = !value;
-  setServer(pin, String(value));
-};
-
-// Envia dados pro server
-void setServer(String pin, String value){
-  setSensor(pin.toInt(), value.toInt());
-  client.print(pin + ";" + value);
-};
-
-// Envia dados pro sensor
-void setSensor(int pin, int type){
-  digitalWrite(pin, type);
-};
-
-// Pegar o valor de leitura
-void getString(char _txt) {
-  String txt(_txt);
-  if(txt == "<"){
-    _text = "";
-  }else if(txt == ">"){
-    setSensor(getValue(_text, ',', 0).toInt(), getValue(_text, ',', 1).toInt());
-  }else{
-    _text = _text + _txt;
-  }
-};
-
-// Split na string recebida
-String getValue(String data, char separator, int index) {
-  int found = 0;
-  int strIndex[] = { 0, -1 };
-  int maxIndex = data.length()-1;
-  for(int i=0; i<=maxIndex && found<=index; i++){
-    if(data.charAt(i)==separator || i==maxIndex){
-      found++;
-      strIndex[0] = strIndex[1]+1;
-      strIndex[1] = (i == maxIndex) ? i+1 : i;
+  for(int i = 0; i < totalSensor; i++){
+    if(digitalRead(sensor[i]) != realSensor[i]){
+      realSensor[i] = digitalRead(sensor[i]);
+      client.print(String(pinSensor[i]) + "-" + String(realSensor[i]));
     }
-   }
-  return found>index ? data.substring(strIndex[0], strIndex[1]) : "";
-};
+  }    
+  
+}

@@ -26,7 +26,7 @@ function execute(listArduinos, listClients,  _entities, _length, now){
       entity.status = _entities[now].status;
       entity.updateAttributes(entity).success(function(){
         for (c in listClients) {
-         listClients[c].emit('message', entity);
+          listClients[c].emit('message', entity);
         };
         execute(listArduinos, _entities, _length, now + 1);
       });

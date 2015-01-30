@@ -5,10 +5,10 @@
   			<h2>{{sensor.description}}</h2>
   			<br>
     		<p ng-show="sensor.status == 0">
-    			<button type="button" class="btn btn-lg btn-success btn-block" ng-click="sensorOn(sensor)">{{sensor.labelOn}}</button>
+    			<button type="button" class="btn btn-lg btn-success btn-block" ng-click="toogle(sensor)">{{sensor.labelOn}}</button>
     		</p>
         <p ng-show="sensor.status == 1">
-          <button type="button" class="btn btn-lg btn-danger btn-block" ng-click="sensorOff(sensor)">{{sensor.labelOff}}</button>
+          <button type="button" class="btn btn-lg btn-danger btn-block" ng-click="toogle(sensor)">{{sensor.labelOff}}</button>
         </p>
   		</div>
   	</div>

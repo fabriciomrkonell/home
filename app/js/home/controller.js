@@ -19,12 +19,8 @@ define(['js/app', 'socketIO'], function (app, socketIO) {
       });
     });
 
-    $scope.sensorOn = function(sensor){
-    	socket.send({ message: sensor, status: 1 });
-    };
-
-    $scope.sensorOff = function(sensor){
-			socket.send({ message: sensor, status: 0 });
+    $scope.toogle = function(sensor){
+    	socket.send(sensor);
     };
 
   }]);
