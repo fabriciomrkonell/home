@@ -19,7 +19,7 @@ define(['js/app'], function (app) {
 
     clear();
 
-    $http.get('/arduino').success(function(data) {
+    $http.get('http://pesagem.ranchobom.com/arduino').success(function(data) {
       angular.extend($scope, {
         arduinos: data
       });
@@ -43,7 +43,7 @@ define(['js/app'], function (app) {
 
     $scope.save = function(){
       $scope.data.ArduinoId = $scope.arduinos[$scope.data.arduino].id;
-      $http.post('/task', $scope.data).success(function(data) {
+      $http.post('http://pesagem.ranchobom.com/task', $scope.data).success(function(data) {
         SweetAlert.success(data.message, "", "<i class='glyphicon glyphicon-ok'></i>&nbsp;&nbsp;Ok");
         clear();
       });

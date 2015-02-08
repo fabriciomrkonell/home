@@ -2,8 +2,8 @@
 #include <Ethernet.h>
 
 byte mac[] = { 0x90, 0xA2, 0xDA, 0x00, 0x6C, 0xFE };
-IPAddress ip(192,168,2,99);
-IPAddress server(192,168,2,218);
+IPAddress ip(192,168,0,177);
+IPAddress server(192,168,0,3);
 EthernetClient client;
 
 // Variáveis
@@ -20,7 +20,6 @@ int realSensor[] = { 0, 0, 0, 0 };
 
 int totalSensor = 4;
 int totalOutros = 3;
-
 
 void setup() {
   Ethernet.begin(mac, ip);
@@ -47,14 +46,6 @@ void setup() {
 };
 
 void loop() {
-
-  int sensorValue = analogRead(A0);
-  int outputValue = map(sensorValue, 0, 1023, -30, 30); 
-  Serial.print("Sensor: "); 
-  Serial.print(sensorValue);    
-  Serial.print("Valor em Amperes: "); 
-  Serial.println(outputValue);   
-  
   if (client.available()) {
     char c = client.read();
     _readString(c);      

@@ -1,7 +1,7 @@
 define(['js/app'], function (app) {
   app.controller('arduino', ['$scope', '$http', '$window', function ($scope, $http, $window) {
 
-    $http.get('/arduino').success(function(data) {
+    $http.get('http://pesagem.ranchobom.com/arduino').success(function(data) {
       angular.extend($scope, {
         data: data
       });
@@ -12,7 +12,7 @@ define(['js/app'], function (app) {
     };
 
     $scope.delete = function(obj, index) {
-      $http.delete('/arduino/' + obj.id).success(function(data) {
+      $http.delete('http://pesagem.ranchobom.com/arduino/' + obj.id).success(function(data) {
         $scope.data.splice(index, 1);
       })
     };

@@ -2,7 +2,7 @@ define(['js/app'], function (app) {
   app.controller('task', ['$scope', '$http', '$window', function ($scope, $http, $window) {
 
     function init(){
-      $http.get('/task').success(function(data) {
+      $http.get('http://pesagem.ranchobom.com/task').success(function(data) {
         angular.extend($scope, {
           data: data
         });
@@ -34,13 +34,13 @@ define(['js/app'], function (app) {
     };
 
     $scope.toogleRepeat = function(obj){
-      $http.post('/task/toogle/' + obj.id).success(function(){
+      $http.post('http://pesagem.ranchobom.com/task/toogle/' + obj.id).success(function(){
         init();
       })
     };
 
     $scope.delete = function(obj, index, type) {
-      $http.delete('/task/' + obj.id).success(function(data) {
+      $http.delete('http://pesagem.ranchobom.com/task/' + obj.id).success(function(data) {
         if(type == 1){
           $scope.data.today.splice(index, 1);
         }else if (type == 2){

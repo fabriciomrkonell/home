@@ -13,7 +13,7 @@ define(['js/app'], function (app) {
     };
 
     if($routeParams.id){
-      $http.get('/arduino/' + $routeParams.id).success(function(data) {
+      $http.get('http://pesagem.ranchobom.com/arduino/' + $routeParams.id).success(function(data) {
         angular.extend($scope, {
           data: data
         });
@@ -23,7 +23,7 @@ define(['js/app'], function (app) {
     }
 
     $scope.save = function(){
-      $http.post('/arduino', $scope.data).success(function(data) {
+      $http.post('http://home-arduino.herokuapp.com/arduino', $scope.data).success(function(data) {
         if($routeParams.id){
           $window.location = '/home#sensor';
         }else{

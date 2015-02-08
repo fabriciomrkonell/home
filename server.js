@@ -1,10 +1,6 @@
 var express = require('express'),
     app = express(),
     http = require('http').Server(app),
-    io = require('socket.io'),
-    io = io.listen(http),
-    net = require('net')
-    tcpServer = net.createServer(),
     cors = require('cors'),
     url = require('url'),
     sys = require(process.binding('natives').util ? 'util' : 'sys'),
@@ -16,13 +12,7 @@ var express = require('express'),
     passport = require('passport'),
     flash = require('connect-flash'),
     LocalStrategy = require('passport-local').Strategy,
-    user = require('./routes/user'),
-    arduino = require('./routes/arduino'),
-    task = require('./routes/task'),
-    site = require('./routes/site'),
-    listArduinos = [],
-    listClients = [],
-    time = '';
+    user = require('./routes/user');
 
 app.set('port', process.env.PORT || 3000)
 app.use(cors());
@@ -140,77 +130,10 @@ app.get('/views/task/new/:page', naoAutenticado, function(req, res, next){
 });
 
 app.get('/init', user.create)
-app.get('/arduino', naoAutenticado, arduino.findAll)
-app.get('/arduino/:id', naoAutenticado, arduino.find)
-app.get('/real-time', naoAutenticado, site.realTime)
-app.get('/task', task.findAll)
-
-app.post('/arduino', naoAutenticado, arduino.persist)
-app.post('/task', naoAutenticado, task.persist)
-app.post('/task/toogle/:id', naoAutenticado, task.toogleRepeat)
-
-app.del('/arduino/:id', naoAutenticado, arduino.delete)
-app.del('/task/:id', naoAutenticado, task.delete)
 
 if ('development' === app.get('env')) {
   app.use(errorHandler())
 }
-
-io.on('connection', function(client){
-
-  listClients.push(client);
-
-  client.on('message', function(obj){
-    for (a in listArduinos) {
-      listArduinos[a].write(obj.pin.toString());
-    };
-  });
-
-  client.on('disconnect', function(){
-    for(var i = 0; i < listClients.length; i++){
-      if(listClients[i].id == client.id){
-        listClients.splice(i, 1);
-      }
-    }
-  });
-
-});
-
-tcpServer.on('connection',function(socket){
-
-  console.log('Arduino conectado');
-  listArduinos.push(socket);
-  arduino.reset();
-
-  socket.text = "";
-
-  socket.on('data',function(data){
-
-    socket.text = socket.text + data.toString();
-
-    if(socket.text.length > 3){
-      socket.text = "";
-    }
-
-    if(socket.text.length == 3){
-      if(socket.text.charAt(1) == "-"){
-        db.Arduino.find({ where: { pin: socket.text.charAt(0) } }).success(function(entity) {
-          if(entity){
-            entity.status = socket.text.charAt(2);
-            socket.text = "";
-            entity.updateAttributes(entity).success(function(_entity) {
-              for (c in listClients) {
-                listClients[c].emit('message', _entity);
-              };
-            })
-          }
-        });
-      }else{
-        socket.text = "";
-      }
-    }
-  });
-});
 
 db.sequelize.sync({ force: false }).complete(function(err) {
   if (err) {
@@ -219,32 +142,5 @@ db.sequelize.sync({ force: false }).complete(function(err) {
     http.listen(app.get('port'), function(){
       console.log('NodeJS está na porta: ' + app.get('port') + '.');
     });
-    tcpServer.listen(1337, function(){
-      console.log('Socket está na porta: 1337.');
-    });
   }
 })
-
-function _getTime(data){
-  var _final = '';
-  if(parseInt(data.getHours()) < 10){
-    _final = _final + "0" + parseInt(data.getHours());
-  }else{
-    _final = _final + parseInt(data.getHours());
-  }
-  if(parseInt(data.getMinutes()) < 10){
-    _final = _final + "0" + parseInt(data.getMinutes());
-  }else{
-    _final = _final + parseInt(data.getMinutes());
-  }
-  return _final;
-};
-
-setInterval(function(){
-  time = _getTime(new Date());
-  if(time.slice(2,4) == "00"){
-    task.execute(listArduinos, listClients, time);
-  }else if(time.slice(2,4) == "30"){
-    task.execute(listArduinos, listClients, time);
-  }
-}, 60000);
