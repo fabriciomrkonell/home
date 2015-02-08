@@ -156,19 +156,6 @@ if ('development' === app.get('env')) {
   app.use(errorHandler())
 }
 
-/*function toogle(message, client, status){
-
-  //arduino.toogleStatus(message.pin, status);
-
-  //message.status = status;
-
-
-
-  //client.broadcast.emit('message', message);
-  //client.emit('message', message);
-
-};*/
-
 io.on('connection', function(client){
 
   listClients.push(client);
